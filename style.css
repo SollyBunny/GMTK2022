@@ -1,0 +1,35 @@
+@font-face {
+    font-family: PixeloidMono;
+    src: url(font/PixeloidMono.ttf) format("truetype");
+}
+* {
+	color: white;
+	font-family: PixeloidMono;
+}
+body {
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+}
+canvas {
+	background: #221d52 !important;
+}
+#title {
+
+}
+.screen {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 100vw;
+	height: 120vh;
+	background: linear-gradient(rgba(34, 29, 82, 0.2), rgba(34, 29, 82, 0.2) 100vh, rgba(34, 29, 82, 0.0));
+	transition: 1s linear margin-top;
+}
+.screen > h1 {
+	font-weight: 100;
+	width: 100vw;
+	text-align: center;
+}
