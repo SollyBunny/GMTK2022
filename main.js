@@ -58,7 +58,6 @@ let player = new Obj(0, 0, 0, "player", 100);
 let camera = new Pos(0, 0);
 
 window.onkeydown = () => {
-	console.log(event.keyCode)
 	if (state == 0) {
 		if (event.keyCode === 27) e_settingscheckbox.click();
 		return;
@@ -97,7 +96,7 @@ window.onload = () => {
 				e_text.style.marginLeft = "0";
 			}
 			return;
-		} else if (event.target.id === "settings" || e_settingsmenu.style.marginLeft === "0vw") return;
+		} else if (event.target.id === "settings" || event.srcElement.parentElement.parentElement.id === "githubcorner" || e_settingsmenu.style.marginLeft === "0vw") return;
 		e_title.style.marginTop = "-120vh";
 		state = 1;
 		music.play();
