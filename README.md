@@ -1,5 +1,5 @@
 # GMTK2022
-GMTK Gamejam 2022  
+GMTK Game Jam 2022  
 https://itch.io/jam/gmtk-jam-2022  
   
 ### Stuff used:  
