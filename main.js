@@ -102,7 +102,7 @@ window.onload = async () => {
 				e_settingsmenu.style.marginLeft = "-100vw";
 				e_text.style.marginLeft = "0";
 			}
-			return;
+			return;	
 		} else if (event.target.id === "settings" || event.srcElement.parentElement.parentElement.id === "githubcorner" || e_settingsmenu.style.marginLeft === "0vw") return;
 		e_title.style.marginTop = "-120vh";
 		e_text.style.marginTop = "85vh";
@@ -134,8 +134,6 @@ window.onload = async () => {
 
 	can = document.getElementById("canvas");
 	ctx = can.getContext("2d");
-	ctx.textBaseline = "middle";
-	ctx.textAlign = "center";
 	ctx.imageSmoothingEnabled = false;
 	window.onresize();
 	window.requestAnimationFrame(frame);	
@@ -175,10 +173,10 @@ function spawndie() {
 	if (spawneddie < 5) { // this code is written after me destroying my left hand soz for bad quality
 		c1 = 0;
 		c2 = 1;
-	} else if (spawndie < 10) {
+	} else if (spawneddie < 10) {
 		c1 = 0.5;
 		c2 = 0;
-	} else if (spawndie < 20) {
+	} else if (spawneddie < 20) {
 		c1 = 1;
 		c2 = 0.5;
 	} else {
@@ -201,6 +199,8 @@ let lastt = 0, dt = 0;
 let totalt = 0, totalactualt = 0;
 function frame(t) {
 	if (ctx.font !== "15px PixeloidMono") ctx.font = "15px PixeloidMono";
+	ctx.textBaseline = "middle";
+	ctx.textAlign = "center";
 	dt = t - lastt;
 	lastt = t;
 	if (state === 1) totalt += dt;
@@ -325,7 +325,7 @@ function frame(t) {
 			ctx.globalAlpha = 0.7;
 			switch (i.name) {
 				case "text":
-					ctx.fillStyle = "#f490a9"
+					ctx.fillStyle = "#f490a9";
 					ctx.fillText(i.data, i.x, i.y);
 					break;
 				case "coin":
@@ -351,6 +351,26 @@ function frame(t) {
 						24,
 						24
 					);
+					break;
+				case "wall":
+					ctx.globalAlpha = 0.2;
+					ctx.fillStyle = "#6d3493";
+					ctx.fillRect(i.x - 5, i.y - 1000, 10, 1000);
+					if (i.data === undefined) {
+						if (player.y > i.y) break;
+						if (player.x > i.x) i.data = 0;
+						else                i.data = 1;
+					} else if (player.y < i.y - 1000) {
+						i.data = undefined;
+					} else if (i.data === 0) {
+						if (player.x < i.x) {
+							player.x += (i.x - player.x) * 0.1;
+						}
+					} else { // i.data === 1
+						if (player.x > i.x) {
+							player.x += (i.x - player.x) * 0.1;
+						}
+					}
 					break;
 				case "boost":
 					if (camera.y - i.y - (i.data / 2) < -can.height / 2) {
@@ -603,14 +623,16 @@ function frame(t) {
 									}
 									break;
 							}
-							for (let _ = 0; _ < Math.random() * 4; ++_) {
-								objs.push(new Obj(Math.random() * 1000 - 500, i.y - 200 - (Math.random() * 2000), Math.random(), "saw", 24 * Math.floor(Math.random() * 5)));
-							}
-							for (let _ = 0; _ < Math.random() * 2; ++_) {
-								// COME BACK
-								objs.push(new Obj(undefined, i.y - 500 - (Math.random() * 500), undefined, "boost", Math.random() > 0.0 ? 1 : 0));
-							}
 						});
+						for (let _ = 0; _ < Math.random() * 4; ++_) {
+							objs.push(new Obj(Math.random() * 1000 - 500, i.y - 200 - (Math.random() * 2000), Math.random(), "saw", 24 * Math.floor(Math.random() * 5)));
+						}
+						for (let _ = 0; _ < Math.random() * 2; ++_) {
+							objs.push(new Obj(undefined, i.y - 500 - (Math.random() * 500), undefined, "boost", Math.random() > 0.8 ? 1 : 0));
+						}
+						if (Math.random() > 0.5) {
+							objs.push(new Obj(0, i.y - 100 - (Math.random() * 500), undefined, "wall"));
+						}
 						i.name = "dicedecay";
 						i.data = 0;
 						dicespawnid = window.setTimeout(spawndie, 1000);
@@ -652,6 +674,11 @@ function frame(t) {
 								48,
 								48
 							);
+							if (i.id === 2 && tutorial !== 2) {
+								ctx.restore();
+								ctx.fillStyle = "#f490a9";
+								ctx.fillText("THE DICE DETERMINE THE OBSTACLES AHEAD", 0, i.y + 50);
+							}
 							break;
 						case 2:
 							ctx.translate(i.x - 100, i.y);
@@ -801,6 +828,9 @@ function frame(t) {
 
 		camera.x = ((camera.x * dt) + player.x) / (1 + dt);
 		camera.y = ((camera.y * dt) + player.y) / (1 + dt) - (player.vel * cos(player.dir) * 0.5);
+		if (player.data > 100) {
+			camera.y -= player.vel;
+		}
 
 	}
 
