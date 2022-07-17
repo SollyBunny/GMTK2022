@@ -83,7 +83,7 @@ window.onresize = () => {
 	can.height = window.innerHeight;
 };
 
-font = new FontFace("PixeloidMono", "url(./font/PixeloidMono.ttf)")
+font = new FontFace("PixeloidMono", "url(./PixeloidMono.ttf)")
 font.load().then((font) => {
 	document.fonts.add(font);
 	if (ctx) ctx.font = "15px PixeloidMono";
@@ -856,7 +856,7 @@ function frame(t) {
 	window.requestAnimationFrame(frame);	
 }
 
-let music = new Audio("music/music.mp3");
+let music = new Audio("./music.mp3");
 music.onended = () => {
     music.currentTime = 0;
     music.play();
