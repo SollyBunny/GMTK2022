@@ -91,7 +91,10 @@ font.load().then((font) => {
 
 window.onload = async () => {
 	// warn on itch.io
-	if (document.location.host === "sollybunny.itch.io") document.getElementById("warn").style.display = "block";
+	if (document.location.host === "sollybunny.itch.io") {
+		console.log("hi")
+		document.getElementById("warn").style.display = "block";
+	}
 	e_title = document.getElementById("title");
 	e_title.onclick = () => {
 		if (event.target.id === "settingscheckbox") {
